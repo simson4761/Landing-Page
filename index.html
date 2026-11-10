@@ -11,15 +11,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=DM+Sans:wght@400;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;600&family=Barlow+Condensed:wght@600;700&display=swap"
         rel="stylesheet">
     <style>
         :root {
             --black: #050507;
             --chrome: #eef1f6;
             --mute: #9aa3b5;
-            --orange: #ff6a2b;
-            --glass: rgba(255, 255, 255, .08);
+            --orange: #ff5a1f;
+            --glass: rgba(255, 255, 255, .07);
+            --display: "Anton", "Impact", "Arial Narrow Bold", sans-serif;
+            --cond: "Barlow Condensed", "Arial Narrow", sans-serif;
         }
 
         * {
@@ -33,19 +35,32 @@
         }
 
         body {
-            font-family: "DM Sans", system-ui, sans-serif;
+            font-family: "Barlow", system-ui, sans-serif;
             color: var(--chrome);
             line-height: 1.5;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
+        /* film grain over everything */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            pointer-events: none;
+            opacity: .09;
+            mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+        }
+
         h1,
         h2,
         .cap,
         .tile b {
-            font-family: "Bricolage Grotesque", system-ui, sans-serif;
-            font-weight: 800;
+            font-family: var(--display);
+            font-weight: 400;
+            text-transform: uppercase;
         }
 
         nav {
@@ -56,27 +71,33 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 2rem;
-            background: rgba(5, 5, 7, .55);
+            gap: 2.2rem;
+            background: rgba(5, 5, 7, .6);
             backdrop-filter: saturate(180%) blur(20px);
             -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, .08);
-            font-size: .85rem;
+            border-bottom: 1px solid rgba(255, 255, 255, .1);
+            font-family: var(--cond);
+            font-weight: 700;
+            font-size: .95rem;
+            letter-spacing: .22em;
+            text-transform: uppercase;
         }
 
         nav a {
             color: var(--chrome);
-            opacity: .8;
+            opacity: .75;
             text-decoration: none;
+            transition: opacity .2s, color .2s;
         }
 
         nav a:hover {
             opacity: 1;
+            color: var(--orange);
         }
 
         nav a:focus-visible,
         .tile:focus-visible {
-            outline: 2px solid var(--chrome);
+            outline: 2px solid var(--orange);
             outline-offset: 3px;
         }
 
@@ -112,16 +133,16 @@
 
         /* hero */
         .hero .veil {
-            background: linear-gradient(180deg, rgba(5, 5, 7, .25) 0%, rgba(5, 5, 7, .45) 55%, var(--black) 100%);
+            background: linear-gradient(180deg, rgba(5, 5, 7, .3) 0%, rgba(5, 5, 7, .5) 55%, var(--black) 100%);
         }
 
         h1 {
             position: relative;
-            font-size: clamp(3.8rem, 16vw, 12rem);
-            letter-spacing: -.045em;
-            line-height: .95;
+            font-size: clamp(5rem, 24vw, 18rem);
+            letter-spacing: .01em;
+            line-height: .9;
             color: var(--chrome);
-            text-shadow: 0 .04em .5em rgba(0, 0, 0, .45);
+            text-shadow: 0 .03em .35em rgba(0, 0, 0, .6);
             transform: scale(var(--s, 1));
             opacity: var(--o, 1);
             will-change: transform, opacity;
@@ -130,12 +151,15 @@
         .sub {
             position: relative;
             display: inline-block;
-            margin-top: 1.4rem;
-            padding: .55rem 1.2rem;
-            border-radius: 999px;
-            font-size: clamp(1rem, 2.4vw, 1.35rem);
+            margin-top: 1.6rem;
+            padding: .5rem 1.2rem .5rem 1rem;
+            font-family: var(--cond);
+            font-weight: 700;
+            font-size: clamp(1rem, 2.6vw, 1.45rem);
+            letter-spacing: .28em;
+            text-transform: uppercase;
             background: var(--glass);
-            border: 1px solid rgba(255, 255, 255, .22);
+            border-left: 4px solid var(--orange);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             opacity: var(--o, 1);
@@ -144,14 +168,17 @@
         .hint {
             position: absolute;
             bottom: 2rem;
-            font-weight: 600;
+            font-family: var(--cond);
+            font-weight: 700;
+            letter-spacing: .4em;
+            text-transform: uppercase;
             color: var(--mute);
             opacity: var(--o, 1);
         }
 
         /* story */
         .story .veil {
-            background: radial-gradient(ellipse at center, rgba(5, 5, 7, .15), rgba(5, 5, 7, .7));
+            background: radial-gradient(ellipse at center, rgba(5, 5, 7, .2), rgba(5, 5, 7, .75));
         }
 
         .cap {
@@ -159,48 +186,46 @@
             left: 0;
             right: 0;
             padding: 0 1.5rem;
-            font-size: clamp(2.8rem, 11vw, 9rem);
-            letter-spacing: -.045em;
-            line-height: .98;
+            font-size: clamp(3.4rem, 15vw, 12rem);
+            letter-spacing: .015em;
+            line-height: .95;
             color: var(--chrome);
-            text-shadow: 0 .05em .6em rgba(0, 0, 0, .55);
+            text-shadow: 0 .04em .4em rgba(0, 0, 0, .7);
             opacity: 0;
             will-change: transform, opacity;
         }
 
-        /* about */
-        .about {
-            position: relative;
-            min-height: 110vh;
-            display: grid;
-            place-items: center;
-            padding: 8rem 1.5rem;
-            overflow: hidden;
-            background: var(--black);
+        /* about: pinned so the full text can finish before the section leaves */
+        .about .pin {
+            padding: 0 1.5rem;
         }
 
         .about .bg {
-            height: 130%;
-            top: -15%;
+            filter: brightness(.9) contrast(1.1) saturate(1.2);
         }
 
         .about .veil {
-            background: rgba(5, 5, 7, .72);
+            background:
+                radial-gradient(ellipse 70% 55% at 50% 50%, rgba(5, 5, 7, .55), rgba(5, 5, 7, .1) 100%),
+                linear-gradient(180deg, rgba(5, 5, 7, .35), rgba(5, 5, 7, 0) 25%, rgba(5, 5, 7, 0) 75%, rgba(5, 5, 7, .5));
         }
 
         .about p {
             position: relative;
-            max-width: 56rem;
-            font-family: "Bricolage Grotesque", sans-serif;
-            font-weight: 800;
-            font-size: clamp(1.9rem, 5vw, 3.6rem);
-            letter-spacing: -.03em;
-            line-height: 1.15;
+            max-width: 58rem;
+            text-align: left;
+            font-family: var(--cond);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: clamp(1.9rem, 5.2vw, 3.8rem);
+            letter-spacing: .02em;
+            line-height: 1.08;
+            text-shadow: 0 .04em .3em rgba(0, 0, 0, .85), 0 0 1.2em rgba(0, 0, 0, .6);
         }
 
         .about span {
-            color: rgba(238, 241, 246, .28);
-            transition: color .35s;
+            color: rgba(238, 241, 246, .26);
+            transition: color .3s;
         }
 
         .about span.on {
@@ -209,15 +234,30 @@
 
         /* links */
         .links {
-            padding: 7rem 1.5rem;
-            background: var(--black);
+            padding: 7rem 1.5rem 6rem;
+            background:
+                radial-gradient(ellipse 60% 40% at 15% 0%, rgba(255, 90, 31, .32), transparent 70%),
+                radial-gradient(ellipse 55% 45% at 95% 45%, rgba(48, 72, 255, .3), transparent 70%),
+                repeating-linear-gradient(135deg, rgba(255, 255, 255, .025) 0 2px, transparent 2px 14px),
+                linear-gradient(180deg, #120a10 0%, #0a0a14 55%, var(--black) 100%);
         }
 
         .links h2 {
             text-align: center;
-            font-size: clamp(2.4rem, 7vw, 5rem);
-            letter-spacing: -.04em;
-            margin-bottom: 3rem;
+            font-size: clamp(3rem, 10vw, 7rem);
+            letter-spacing: .02em;
+            line-height: 1;
+            margin-bottom: 3.5rem;
+        }
+
+        .links h2::after {
+            content: "";
+            display: block;
+            width: 5rem;
+            height: 5px;
+            margin: 1.2rem auto 0;
+            background: var(--orange);
+            box-shadow: 0 0 1.2rem var(--orange);
         }
 
         .grid {
@@ -234,16 +274,16 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            min-height: 19rem;
+            min-height: 27rem;
             padding: 1.75rem;
-            border-radius: 1.75rem;
+            border-radius: .4rem;
             color: var(--chrome);
             text-decoration: none;
-            border: 1px solid rgba(255, 255, 255, .14);
+            border: 1px solid rgba(255, 255, 255, .16);
             isolation: isolate;
             opacity: 0;
             transform: translateY(60px) scale(.97);
-            transition: opacity .9s cubic-bezier(.2, .7, .2, 1), transform .9s cubic-bezier(.2, .7, .2, 1), border-color .3s;
+            transition: opacity .9s cubic-bezier(.2, .7, .2, 1), transform .9s cubic-bezier(.2, .7, .2, 1), border-color .3s, box-shadow .3s;
         }
 
         .tile.in {
@@ -266,11 +306,12 @@
             position: absolute;
             inset: 0;
             z-index: -1;
-            background: linear-gradient(180deg, rgba(5, 5, 7, 0) 30%, rgba(5, 5, 7, .85));
+            background: linear-gradient(180deg, rgba(5, 5, 7, .05) 25%, rgba(5, 5, 7, .9));
         }
 
         .tile:hover {
-            border-color: rgba(255, 255, 255, .4);
+            border-color: var(--orange);
+            box-shadow: 0 0 2rem rgba(255, 90, 31, .35);
         }
 
         .tile:hover img {
@@ -279,30 +320,28 @@
 
         .tile b {
             display: block;
-            font-size: 2rem;
-            letter-spacing: -.02em;
+            font-size: 2.6rem;
+            letter-spacing: .03em;
+            line-height: 1.05;
         }
 
         .tile small {
+            font-family: var(--cond);
+            font-weight: 600;
+            font-size: 1.05rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
             color: #cfd5e2;
-            font-size: 1rem;
-        }
-
-        .tile i {
-            position: absolute;
-            top: 1.4rem;
-            right: 1.5rem;
-            width: .7rem;
-            height: .7rem;
-            border-radius: 50%;
-            background: var(--orange);
-            box-shadow: 0 0 1rem var(--orange);
         }
 
         footer {
             text-align: center;
             padding: 1rem 1rem 3rem;
-            font-size: .9rem;
+            font-family: var(--cond);
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
             color: var(--mute);
         }
 
@@ -313,6 +352,7 @@
 
             nav {
                 gap: 1.2rem;
+                letter-spacing: .14em;
             }
         }
 
@@ -334,13 +374,21 @@
             .pin {
                 height: auto;
                 min-height: 100vh;
-                padding: 6rem 0;
+                padding: 6rem 1.5rem;
             }
 
             .cap {
                 position: relative;
                 opacity: 1;
                 margin: 1.5rem 0;
+            }
+
+            .sbg:not(:first-of-type) {
+                display: none;
+            }
+
+            .about span {
+                color: var(--chrome);
             }
         }
     </style>
@@ -353,13 +401,13 @@
     <!-- Hero (optional Seedance clip: videos/hero.mp4 plays over the image) -->
     <section class="scene" id="top" style="height:220vh">
         <div class="pin hero">
-            <img class="bg" id="heroImg" src="images/iridescent.jpg" alt="">
+            <img class="bg" id="heroImg" src="images/home.jpg" alt="">
             <video class="bg" src="videos/hero.mp4" autoplay muted loop playsinline preload="auto"
                 aria-hidden="true"></video>
             <div class="veil"></div>
             <div>
-                <h1 id="heroTitle">Simson.</h1>
-                <p class="sub" id="heroSub">Android developer. Bengaluru.</p>
+                <h1 id="heroTitle">Simson</h1>
+                <p class="sub" id="heroSub">Android developer | Bengaluru.</p>
             </div>
             <div class="hint" id="hint">Scroll</div>
         </div>
@@ -368,41 +416,42 @@
     <!-- Story: image crossfades with each line -->
     <section class="scene story" id="story" style="height:450vh">
         <div class="pin">
-            <img class="bg sbg" src="images/skull.jpg" alt="">
-            <img class="bg sbg" src="images/robot.jpg" alt="">
-            <img class="bg sbg" src="images/swirl.jpg" alt="">
+            <img class="bg sbg" src="images/batman.jpg" alt="">
+            <img class="bg sbg" src="images/iced_tiger.jpg" alt="">
+            <img class="bg sbg" src="images/blast.jpg" alt="">
             <div class="veil"></div>
-            <p class="cap">Untameable.</p>
-            <p class="cap">Unstoppable.</p>
-            <p class="cap">Simson<br>nerandharom.</p>
+            <p class="cap">Untameable</p>
+            <p class="cap">Unstoppable</p>
+            <p class="cap">Simson<br>nerandharom</p>
         </div>
     </section>
 
-    <section class="about" aria-label="About">
-        <img class="bg" data-par src="images/amber.jpg" alt="">
-        <div class="veil"></div>
-        <p id="words">Two years of Kotlin, Jetpack Compose and native C++. Apps that run AI models offline, ship to real
-            users, and feel smoother than the ones you already love.</p>
+    <section class="scene about" id="about" aria-label="About" style="height:240vh">
+        <div class="pin">
+            <img class="bg" data-par src="images/amber.jpg" alt="">
+            <div class="veil"></div>
+            <p id="words">Two years of Kotlin, Jetpack Compose and native C++. Apps that run AI models offline, ship to
+                real users, and feel smoother than the ones you already love.</p>
+        </div>
     </section>
 
     <section class="links" id="connect">
-        <h2>Come say hi.</h2>
+        <h2>Come say hi...🤙</h2>
         <div class="grid">
             <a class="tile" href="https://www.linkedin.com/in/YOUR-LINKEDIN/" target="_blank" rel="noopener"><img
-                    src="images/skull.jpg" alt="" loading="lazy"><i aria-hidden="true"></i><b>LinkedIn</b><small>The
+                    src="images/linkedin.jpg" alt="" loading="lazy"><b>LinkedIn</b><small>The
                     serious one.</small></a>
             <a class="tile" href="https://github.com/YOUR-GITHUB" target="_blank" rel="noopener"><img
-                    src="images/robot.jpg" alt="" loading="lazy"><i aria-hidden="true"></i><b>GitHub</b><small>Where the
-                    code lives.</small></a>
+                    src="images/github.jpg" alt="" loading="lazy"><b>GitHub</b><small>Where
+                    the code lives.</small></a>
             <a class="tile" href="https://www.instagram.com/YOUR-INSTA/" target="_blank" rel="noopener"><img
-                    src="images/iridescent.jpg" alt="" loading="lazy"><i
-                    aria-hidden="true"></i><b>Instagram</b><small>The fun one.</small></a>
-            <a class="tile" href="mailto:you@example.com"><img src="images/swirl.jpg" alt="" loading="lazy"><i
-                    aria-hidden="true"></i><b>Email</b><small>I actually reply.</small></a>
+                    src="images/instagram.jpg" alt="" loading="lazy"><b>Instagram</b><small>The fun one.</small></a>
+            <a class="tile" href="mailto:you@example.com"><img src="images/gmail.jpg" alt=""
+                    loading="lazy"><b>Email</b><small>I actually reply.</small></a>
         </div>
     </section>
 
-    <footer>Built by Simson. Style da.</footer>
+    <footer>I am waiting...</footer>
 
     <script>
         (function () {
@@ -412,10 +461,10 @@
             document.querySelectorAll("video.bg").forEach(function (v) { v.addEventListener("error", function () { v.remove(); }); });
 
             var p = document.getElementById("words");
-            p.innerHTML = p.textContent.split(" ").map(function (w) { return "<span>" + w + "</span>"; }).join(" ");
+            p.innerHTML = p.textContent.trim().split(/\s+/).map(function (w) { return "<span>" + w + "</span>"; }).join(" ");
             var words = p.querySelectorAll("span");
 
-            var hero = document.getElementById("top"), story = document.getElementById("story");
+            var hero = document.getElementById("top"), story = document.getElementById("story"), about = document.getElementById("about");
             var heroImg = document.getElementById("heroImg");
             var sbg = story.querySelectorAll(".sbg"), caps = story.querySelectorAll(".cap");
             var par = document.querySelector("[data-par]");
@@ -445,12 +494,10 @@
                     c.style.transform = "translateY(" + (1 - v) * 40 * (l < 0.5 ? 1 : -1) + "px) scale(" + (0.92 + v * 0.08) + ")";
                 });
 
-                var pr = par.parentNode.getBoundingClientRect();
-                par.style.transform = "translateY(" + ((pr.top + pr.height / 2 - innerHeight / 2) * -0.12) + "px)";
-
-                var r = p.getBoundingClientRect();
-                var wp = clamp((innerHeight * 0.85 - r.top) / (innerHeight * 0.55 + r.height), 0, 1);
-                var lit = Math.round(wp * words.length);
+                // about: pinned; all words are lit by 75% of the scene, then the text holds before scrolling away
+                var a = prog(about);
+                par.style.transform = "scale(" + (1.08 + a * 0.12) + ") translateY(" + (a * -30) + "px)";
+                var lit = Math.round(clamp(a / 0.75, 0, 1) * words.length);
                 words.forEach(function (w, i) { w.classList.toggle("on", i < lit); });
             }
 
